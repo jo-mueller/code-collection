@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Process jobs with map &#8212; Napari-stress documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dask/client_demo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Dask" href="Readme.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Napari-stress documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Readme.html">Dask</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
+
+
+
+
+
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/dask/client_demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Process jobs with map</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">get_client</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate a few functions which we make artifically slow:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">slow_function_for_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">time_to_sleep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">slow_function_for_add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">time_to_sleep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="k">def</span> <span class="nf">slow_function_for_sub</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">time_to_sleep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+
+<span class="k">def</span> <span class="nf">slow_function_for_mul</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">time_to_sleep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="process-jobs-with-map">
+<h1>Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code><a class="headerlink" href="#process-jobs-with-map" title="Permalink to this heading">#</a></h1>
+<p>In this scenario, we want to map a function over a list of inputs with dask. We can do this with the <code class="docutils literal notranslate"><span class="pre">map</span></code> method of the client. The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class provides an instance of a local cluter to which jobs can be submitted. It also automatically spwans a status page which you can view in your browser. (<code class="docutils literal notranslate"><span class="pre">https://localhost:8787/status</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">map</span></code> function takes a function and a list of arguments. It returns a list of futures, which are objects that represent the result of the computation. The futures can be used to get the result of the computation, or to wait for the computation to finish.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">slow_function_for_sqrt</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we check again a brief moment later, we see that the computation has finished. We can get the result of the computation with the <code class="docutils literal notranslate"><span class="pre">result</span></code> method of the future.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can retrieve the results of all the futures with the <code class="docutils literal notranslate"><span class="pre">gather</span></code> method of the client. This method takes a list of futures and returns a list of results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.0, 1.4142135623730951, 1.7320508075688772]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="process-jobs-with-submit">
+<h1>Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code><a class="headerlink" href="#process-jobs-with-submit" title="Permalink to this heading">#</a></h1>
+<p>The key difference of using <code class="docutils literal notranslate"><span class="pre">submit</span></code> instead of <code class="docutils literal notranslate"><span class="pre">map</span></code> is that <code class="docutils literal notranslate"><span class="pre">submit</span></code> returns a future immediately, while <code class="docutils literal notranslate"><span class="pre">map</span></code> returns a list of futures. This means that we can submit jobs to the cluster before all the previous jobs have finished. This is useful if we want to submit jobs to the cluster as soon as they are available.</p>
+<p><em>Note</em>: Some of the results immediately show up as <code class="docutils literal notranslate"><span class="pre">finished</span></code> here: Obviously, <code class="docutils literal notranslate"><span class="pre">dask</span></code> detects that we are using the same function and arguments multiple times and only submits the job once.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_sqrt</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_sqrt-d24f4a7f3bcec3d53cd819b65117791e&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-ab474183c25d3b7b0abbccb62a550dd7&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-c5ec33eacea3351318da9538aa8e2ba0&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-4f609e3b7340ada35ca483fd32f88970&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-13251970827e547145c30a0a810b2dba&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-dde763564b9f6bf61a68c23c5fc458e6&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-5226d671ad1f0d899d6bd01db9b5c7a5&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is super helpful if we want to pass the results of one computation to another computation. For example, we can use the results of the previous computation to compute the sum of the squares of the numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    
+    <span class="c1"># calculate square root and square</span>
+    <span class="n">square_root</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_sqrt</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_mul</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># calculate square root + square</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_add</span><span class="p">,</span> <span class="n">square_root</span><span class="p">,</span> <span class="n">square</span><span class="p">))</span>
+<span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_add-54fe4748df0218e325300b3d5cfa211a&gt;,
+ &lt;Future: pending, key: slow_function_for_add-3f1e322be0116aa85d38c2ecbcd52648&gt;,
+ &lt;Future: pending, key: slow_function_for_add-9c665519553c6b36ccc52415d7b5a68b&gt;,
+ &lt;Future: pending, key: slow_function_for_add-a92a563c83173603a83973215f30b811&gt;,
+ &lt;Future: pending, key: slow_function_for_add-f1471d0df2f606965f22cec45499c711&gt;,
+ &lt;Future: pending, key: slow_function_for_add-f10c088c6cf9c7873efe34130f2830c5&gt;,
+ &lt;Future: pending, key: slow_function_for_add-921c9e905fca9cb6a9bb508e3197d474&gt;,
+ &lt;Future: pending, key: slow_function_for_add-5893cda9d4ce50192fe85cb68c2b811d&gt;,
+ &lt;Future: pending, key: slow_function_for_add-8412d555081d8d1ebc78f157f4e7071f&gt;,
+ &lt;Future: pending, key: slow_function_for_add-e4d42a85df022613ce669f8224f91b6d&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="catching-errors">
+<h1>Catching errors<a class="headerlink" href="#catching-errors" title="Permalink to this heading">#</a></h1>
+<p>One intriguing feature of using dask to process big amounts of data, is that we can catch errors and continue processing the rest of the data. We can demonstrate this by passing some negative values to the functions we created above, among which the <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> function will raise an error. To demonstrate this, we have to modify one of the functions above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">slow_function_for_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">time_to_sleep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_sleep</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x must be positive&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    
+    <span class="c1"># calculate square root and square</span>
+    <span class="n">square_root</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_sqrt</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_mul</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># calculate square root + square</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_add</span><span class="p">,</span> <span class="n">square_root</span><span class="p">,</span> <span class="n">square</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: error, key: slow_function_for_add-d15ecd5f3e59bc81c64e8d8bd54bfcf5&gt;,
+ &lt;Future: error, key: slow_function_for_add-f0e21b48504a6b412d640d6a046cbb31&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-757441b4c19ca7a4671e18f2f7804c27&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-de5787ab9e2771dec32a7e1bfe35a34d&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-f1f95fa54c21489b9c10157f2fbd61d8&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-508a80244946e066568a369448c355cc&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-048b854e8162512061216a24f7c41232&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-db8b30ca43a8ccfd9352c69db8672089&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-5a513bf5b05ac474b1f44eb84d627c82&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-7eea42c67d1f806d5a8fc9496b445951&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-9152457b764ceb391fb9f08dbf04c9c8&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_add-34c3a7774e2c620c72fad9d910de5ab2&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="process-functions-with-multiple-arguments">
+<h1>Process functions with multiple arguments<a class="headerlink" href="#process-functions-with-multiple-arguments" title="Permalink to this heading">#</a></h1>
+<p>We can also process functions with multiple arguments with <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">submit</span></code>. To demonstrate this in a more practical scenario, we show how to interpolate an image with <code class="docutils literal notranslate"><span class="pre">scipy.interpolate.RegularGridInterpolator</span></code>. We first create a function which takes a list of coordinates and returns the interpolated values at those coordinates.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">interpolate_at_point</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">interpolation_method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="n">interpolator</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)),</span> <span class="n">image</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">interpolation_method</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">coordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also create some radom data: A <code class="docutils literal notranslate"><span class="pre">1000x1000</span></code> image with random values between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> and a list of <code class="docutils literal notranslate"><span class="pre">300</span></code> random coordinates at which we want to interpolate the image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="n">sampling_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">client.submit</span></code>, we can submit the interpolation job to the cluster. To each call, we can pass a modified set of arguments and keyword arguments using the splash-operator (<code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">**</span></code>):</p>
+<p><code class="docutils literal notranslate"><span class="pre">client.submit(function,</span> <span class="pre">*arguments,</span> <span class="pre">**keyword_arguments)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sampling_coordinates</span><span class="p">):</span>
+    <span class="n">arguments</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">)</span>
+    
+    <span class="c1"># use different interpolation methods for every second point</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">keyword_arguments</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interpolation_method&#39;</span><span class="p">:</span> <span class="s1">&#39;nearest&#39;</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">keyword_arguments</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interpolation_method&#39;</span><span class="p">:</span> <span class="s1">&#39;linear&#39;</span><span class="p">}</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">interpolate_at_point</span><span class="p">,</span> <span class="o">*</span><span class="n">arguments</span><span class="p">,</span> <span class="o">**</span><span class="n">keyword_arguments</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\johamuel\Anaconda3\envs\stress\lib\site-packages\distributed\worker.py:3039: UserWarning: Large object of size 7.63 MiB detected in task graph: 
+  [array([[0.36043388, 0.09493973, 0.18830925, ...,  ... 934.52816074])]
+Consider scattering large objects ahead of time
+with client.scatter to reduce scheduler burden and 
+keep data on workers
+
+    future = client.submit(func, big_data)    # bad
+
+    big_future = client.scatter(big_data)     # good
+    future = client.submit(func, big_future)  # good
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also use <code class="docutils literal notranslate"><span class="pre">client.map</span></code> to submit jobs with multiple arguments. Note that we don’t need to repeat the keyword arguments n times; We can spceify them once and they will be passed to each call of the function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the arguments and keyword arguments n times:</span>
+<span class="n">arguments</span> <span class="o">=</span> <span class="p">([</span><span class="n">image</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">sampling_coordinates</span><span class="p">),</span> <span class="n">sampling_coordinates</span><span class="p">)</span>
+<span class="n">keyword_arguments</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interpolation_method&#39;</span><span class="p">:</span> <span class="s1">&#39;nearest&#39;</span><span class="p">}</span>
+
+<span class="c1"># Submit the job</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">interpolate_at_point</span><span class="p">,</span>  <span class="o">*</span><span class="n">arguments</span><span class="p">,</span> <span class="o">**</span><span class="n">keyword_arguments</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="scattering-data">
+<h1>Scattering data<a class="headerlink" href="#scattering-data" title="Permalink to this heading">#</a></h1>
+<p>For this, we receive warnings that we should use <code class="docutils literal notranslate"><span class="pre">client.scatter</span></code>. This is the case if the data we want to pass to every job is relatively “large”. We can use <code class="docutils literal notranslate"><span class="pre">client.scatter</span></code> to distribute the data to the workers rather than putting it into our local memory. This method returns a list of futures, which we can use to get the distributed data. The key difference between using <code class="docutils literal notranslate"><span class="pre">.scatter</span></code> or avoiding this is the following:</p>
+<ul class="simple">
+<li><p>With <code class="docutils literal notranslate"><span class="pre">scatter</span></code>: The data is distributed to the workers and the workers can access the data directly.</p></li>
+<li><p>Without <code class="docutils literal notranslate"><span class="pre">scatter</span></code>: The data is first loaded into the local memory of the client and afterwards distributed to the workers. Hence, the data needs to be loaded twice.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">sampling_coordinates</span><span class="p">:</span>
+    <span class="n">image_future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">interpolate_at_point</span><span class="p">,</span> <span class="n">image_future</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sending-jobs-to-a-client-from-within-a-function">
+<h1>Sending jobs to a client from within a function<a class="headerlink" href="#sending-jobs-to-a-client-from-within-a-function" title="Permalink to this heading">#</a></h1>
+<p>In some scenarios, we want to send jobs to a worker from a namespace where we do not have access to the <code class="docutils literal notranslate"><span class="pre">client</span></code>. In this case, we can retrieve the <code class="docutils literal notranslate"><span class="pre">client</span></code> with the <code class="docutils literal notranslate"><span class="pre">get_client</span></code> function (Example taken from <a class="reference external" href="https://distributed.dask.org/en/stable/task-launch.html?highlight=delayed#dask-delayed">here</a>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">number_of_iterations</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">number_of_iterations</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">number_of_iterations</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">get_client</span><span class="p">()</span>
+    <span class="n">a_future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">,</span> <span class="n">number_of_iterations</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">,</span> <span class="n">number_of_iterations</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">([</span><span class="n">a_future</span><span class="p">,</span> <span class="n">b_future</span><span class="p">])</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>55
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-03-13 21:40:03,965 - distributed.scheduler - WARNING - Worker failed to heartbeat within 300 seconds. Closing: &lt;WorkerState &#39;tcp://127.0.0.1:57385&#39;, name: 1, status: running, memory: 82, processing: 0&gt;
+2023-03-13 21:40:03,990 - distributed.scheduler - WARNING - Worker failed to heartbeat within 300 seconds. Closing: &lt;WorkerState &#39;tcp://127.0.0.1:57393&#39;, name: 0, status: running, memory: 85, processing: 8&gt;
+2023-03-13 21:40:04,014 - distributed.scheduler - WARNING - Received heartbeat from unregistered worker &#39;tcp://127.0.0.1:57393&#39;.
+2023-03-13 21:40:04,017 - distributed.scheduler - WARNING - Received heartbeat from unregistered worker &#39;tcp://127.0.0.1:57385&#39;.
+2023-03-13 21:40:06,437 - distributed.nanny - WARNING - Restarting worker
+2023-03-13 21:40:06,441 - distributed.nanny - WARNING - Restarting worker
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./dask"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Readme.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Dask</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Johannes Müller
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
