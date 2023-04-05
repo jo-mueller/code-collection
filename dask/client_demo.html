@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Process jobs with map &#8212; Napari-stress documentation</title>
+    <title>Dask.distributed for parallel processing &#8212; Napari-stress documentation</title>
   
   
   
@@ -151,12 +151,7 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Readme.html">Dask</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
-
-
-
-
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Dask.distributed for parallel processing</a></li>
 </ul>
 </li>
 </ul>
@@ -295,7 +290,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Process jobs with map</h1>
+    <h1>Dask.distributed for parallel processing</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -305,14 +300,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-map">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -323,7 +317,14 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="dask-distributed-for-parallel-processing">
+<h1>Dask.distributed for parallel processing<a class="headerlink" href="#dask-distributed-for-parallel-processing" title="Permalink to this heading">#</a></h1>
+<p>This example demonstrates some basic techniques for parallel processing with dask.distributed. It is ad-hoc a reasonable choice for tasks that fullfill two criteria:</p>
+<ul class="simple">
+<li><p>Each job (for instance in a <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop) is relatively slow to execute (in particular, it should take less time for the job to execute than to load the data for this job)</p></li>
+<li><p>The</p></li>
+</ul>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">get_client</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -356,8 +357,8 @@ document.write(`
 </div>
 </div>
 <section id="process-jobs-with-map">
-<h1>Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code><a class="headerlink" href="#process-jobs-with-map" title="Permalink to this heading">#</a></h1>
-<p>In this scenario, we want to map a function over a list of inputs with dask. We can do this with the <code class="docutils literal notranslate"><span class="pre">map</span></code> method of the client. The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class provides an instance of a local cluter to which jobs can be submitted. It also automatically spwans a status page which you can view in your browser. (<code class="docutils literal notranslate"><span class="pre">https://localhost:8787/status</span></code>).</p>
+<h2>Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code><a class="headerlink" href="#process-jobs-with-map" title="Permalink to this heading">#</a></h2>
+<p>In this scenario, we want to map a function over a list of inputs with dask. We can do this with the <code class="docutils literal notranslate"><span class="pre">map</span></code> method of the client. The <code class="docutils literal notranslate"><span class="pre">Client</span></code> class provides an instance of a local cluster to which jobs can be submitted. It also automatically spwans a status page which you can view in your browser. (<code class="docutils literal notranslate"><span class="pre">https://localhost:8787/status</span></code>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
@@ -374,9 +375,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_sqrt-12381480e8ae49f12c5f2b42be67d712&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-dbde988cb1eec861896df82ae81c9ce0&gt;,
+ &lt;Future: pending, key: slow_function_for_sqrt-96808e77b22c7488da92918c78d425ea&gt;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2023-04-05 13:20:03,564 - distributed.scheduler - WARNING - Worker failed to heartbeat within 300 seconds. Closing: &lt;WorkerState &#39;tcp://127.0.0.1:53964&#39;, name: 0, status: running, memory: 0, processing: 0&gt;
+2023-04-05 13:20:03,574 - distributed.scheduler - WARNING - Received heartbeat from unregistered worker &#39;tcp://127.0.0.1:53964&#39;.
 </pre></div>
 </div>
 </div>
@@ -389,9 +394,9 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
- &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
- &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-748a9de3970cf5a3f8734bb0eb84c282&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-0b277b97886bdd2aa52858d01b7cf664&gt;,
+ &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-7dd7be085b4ed4d3f23afd5c7f608fa7&gt;]
 </pre></div>
 </div>
 </div>
@@ -399,41 +404,42 @@ document.write(`
 <p>We can retrieve the results of all the futures with the <code class="docutils literal notranslate"><span class="pre">gather</span></code> method of the client. This method takes a list of futures and returns a list of results.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.0, 1.4142135623730951, 1.7320508075688772]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="process-jobs-with-submit">
-<h1>Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code><a class="headerlink" href="#process-jobs-with-submit" title="Permalink to this heading">#</a></h1>
+<h2>Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code><a class="headerlink" href="#process-jobs-with-submit" title="Permalink to this heading">#</a></h2>
 <p>The key difference of using <code class="docutils literal notranslate"><span class="pre">submit</span></code> instead of <code class="docutils literal notranslate"><span class="pre">map</span></code> is that <code class="docutils literal notranslate"><span class="pre">submit</span></code> returns a future immediately, while <code class="docutils literal notranslate"><span class="pre">map</span></code> returns a list of futures. This means that we can submit jobs to the cluster before all the previous jobs have finished. This is useful if we want to submit jobs to the cluster as soon as they are available.</p>
 <p><em>Note</em>: Some of the results immediately show up as <code class="docutils literal notranslate"><span class="pre">finished</span></code> here: Obviously, <code class="docutils literal notranslate"><span class="pre">dask</span></code> detects that we are using the same function and arguments multiple times and only submits the job once.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_sqrt</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">slow_function_for_add</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">results</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_sqrt-d24f4a7f3bcec3d53cd819b65117791e&gt;,
- &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-4827e73542353c207e6923c087cf87b5&gt;,
- &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d3cde674842c0dcdb35485f164d0d744&gt;,
- &lt;Future: finished, type: numpy.float64, key: slow_function_for_sqrt-d9b57d474a1081519b039fc997f97bf0&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-ab474183c25d3b7b0abbccb62a550dd7&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-c5ec33eacea3351318da9538aa8e2ba0&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-4f609e3b7340ada35ca483fd32f88970&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-13251970827e547145c30a0a810b2dba&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-dde763564b9f6bf61a68c23c5fc458e6&gt;,
- &lt;Future: pending, key: slow_function_for_sqrt-5226d671ad1f0d899d6bd01db9b5c7a5&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_add-efd93f208a3d2d884a11fe7c29c141c2&gt;,
+ &lt;Future: finished, type: int, key: slow_function_for_add-993e71a80c0c1a0a04d9379873ea2a45&gt;,
+ &lt;Future: pending, key: slow_function_for_add-606c2b0346b78467733f1c98bba3f521&gt;,
+ &lt;Future: pending, key: slow_function_for_add-a92aea6c9ca04ffbdd382f853fcc6a4f&gt;,
+ &lt;Future: pending, key: slow_function_for_add-31f89d276560bb2908c140c9dd70c5da&gt;,
+ &lt;Future: pending, key: slow_function_for_add-bcf96c99db1b76ca30682af7c92ac7b1&gt;,
+ &lt;Future: pending, key: slow_function_for_add-da6e427be686a6fed9dbebbe3483a189&gt;,
+ &lt;Future: pending, key: slow_function_for_add-55a7ef39f26e7d745823fb7eebdea4e3&gt;,
+ &lt;Future: pending, key: slow_function_for_add-fb1a1e13095b4dc997832f7625c3a309&gt;,
+ &lt;Future: pending, key: slow_function_for_add-978b65963b046f4347eb13ab275219f4&gt;]
 </pre></div>
 </div>
 </div>
@@ -455,23 +461,23 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_add-54fe4748df0218e325300b3d5cfa211a&gt;,
- &lt;Future: pending, key: slow_function_for_add-3f1e322be0116aa85d38c2ecbcd52648&gt;,
- &lt;Future: pending, key: slow_function_for_add-9c665519553c6b36ccc52415d7b5a68b&gt;,
- &lt;Future: pending, key: slow_function_for_add-a92a563c83173603a83973215f30b811&gt;,
- &lt;Future: pending, key: slow_function_for_add-f1471d0df2f606965f22cec45499c711&gt;,
- &lt;Future: pending, key: slow_function_for_add-f10c088c6cf9c7873efe34130f2830c5&gt;,
- &lt;Future: pending, key: slow_function_for_add-921c9e905fca9cb6a9bb508e3197d474&gt;,
- &lt;Future: pending, key: slow_function_for_add-5893cda9d4ce50192fe85cb68c2b811d&gt;,
- &lt;Future: pending, key: slow_function_for_add-8412d555081d8d1ebc78f157f4e7071f&gt;,
- &lt;Future: pending, key: slow_function_for_add-e4d42a85df022613ce669f8224f91b6d&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Future: pending, key: slow_function_for_add-5fdbe2ebb5dc9beb4255df120b7a9f8b&gt;,
+ &lt;Future: pending, key: slow_function_for_add-cbdcd20327d9709495f7ade05dab25e4&gt;,
+ &lt;Future: pending, key: slow_function_for_add-71a175d0e38f3d291166f9f93d026985&gt;,
+ &lt;Future: pending, key: slow_function_for_add-da823d26aed51540597a5e2a940167c4&gt;,
+ &lt;Future: pending, key: slow_function_for_add-442f431601a6d1ff291046a5ebb9424c&gt;,
+ &lt;Future: pending, key: slow_function_for_add-6c8ddf9f50d1263ab6da300fbf454e63&gt;,
+ &lt;Future: pending, key: slow_function_for_add-608d77076418f2381d0a571fec4c98f0&gt;,
+ &lt;Future: pending, key: slow_function_for_add-30e371cb2c84c4377419eceb803f1080&gt;,
+ &lt;Future: pending, key: slow_function_for_add-7bbf3e04726f2923f4c879cea613e692&gt;,
+ &lt;Future: pending, key: slow_function_for_add-81dc629431f575e59c818cc341e15dba&gt;]
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="catching-errors">
-<h1>Catching errors<a class="headerlink" href="#catching-errors" title="Permalink to this heading">#</a></h1>
+<h2>Catching errors<a class="headerlink" href="#catching-errors" title="Permalink to this heading">#</a></h2>
 <p>One intriguing feature of using dask to process big amounts of data, is that we can catch errors and continue processing the rest of the data. We can demonstrate this by passing some negative values to the functions we created above, among which the <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> function will raise an error. To demonstrate this, we have to modify one of the functions above:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -524,7 +530,7 @@ document.write(`
 </div>
 </section>
 <section id="process-functions-with-multiple-arguments">
-<h1>Process functions with multiple arguments<a class="headerlink" href="#process-functions-with-multiple-arguments" title="Permalink to this heading">#</a></h1>
+<h2>Process functions with multiple arguments<a class="headerlink" href="#process-functions-with-multiple-arguments" title="Permalink to this heading">#</a></h2>
 <p>We can also process functions with multiple arguments with <code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">submit</span></code>. To demonstrate this in a more practical scenario, we show how to interpolate an image with <code class="docutils literal notranslate"><span class="pre">scipy.interpolate.RegularGridInterpolator</span></code>. We first create a function which takes a list of coordinates and returns the interpolated values at those coordinates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -541,6 +547,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
 <span class="n">sampling_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="n">sampling_coordinates</span>
 </pre></div>
 </div>
 </div>
@@ -564,8 +571,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\johamuel\Anaconda3\envs\stress\lib\site-packages\distributed\worker.py:3039: UserWarning: Large object of size 7.63 MiB detected in task graph: 
-  [array([[0.36043388, 0.09493973, 0.18830925, ...,  ... 934.52816074])]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\johamuel\Anaconda3\envs\stress\lib\site-packages\distributed\worker.py:3039: UserWarning: Large object of size 7.63 MiB detected in task graph: 
+  [array([[0.0306258 , 0.86577458, 0.94539521, ...,  ... 658.64235219])]
 Consider scattering large objects ahead of time
 with client.scatter to reduce scheduler burden and 
 keep data on workers
@@ -595,7 +602,7 @@ keep data on workers
 </div>
 </section>
 <section id="scattering-data">
-<h1>Scattering data<a class="headerlink" href="#scattering-data" title="Permalink to this heading">#</a></h1>
+<h2>Scattering data<a class="headerlink" href="#scattering-data" title="Permalink to this heading">#</a></h2>
 <p>For this, we receive warnings that we should use <code class="docutils literal notranslate"><span class="pre">client.scatter</span></code>. This is the case if the data we want to pass to every job is relatively “large”. We can use <code class="docutils literal notranslate"><span class="pre">client.scatter</span></code> to distribute the data to the workers rather than putting it into our local memory. This method returns a list of futures, which we can use to get the distributed data. The key difference between using <code class="docutils literal notranslate"><span class="pre">.scatter</span></code> or avoiding this is the following:</p>
 <ul class="simple">
 <li><p>With <code class="docutils literal notranslate"><span class="pre">scatter</span></code>: The data is distributed to the workers and the workers can access the data directly.</p></li>
@@ -604,8 +611,8 @@ keep data on workers
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">image_future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">sampling_coordinates</span><span class="p">:</span>
-    <span class="n">image_future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">interpolate_at_point</span><span class="p">,</span> <span class="n">image_future</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -613,7 +620,7 @@ keep data on workers
 </div>
 </section>
 <section id="sending-jobs-to-a-client-from-within-a-function">
-<h1>Sending jobs to a client from within a function<a class="headerlink" href="#sending-jobs-to-a-client-from-within-a-function" title="Permalink to this heading">#</a></h1>
+<h2>Sending jobs to a client from within a function<a class="headerlink" href="#sending-jobs-to-a-client-from-within-a-function" title="Permalink to this heading">#</a></h2>
 <p>In some scenarios, we want to send jobs to a worker from a namespace where we do not have access to the <code class="docutils literal notranslate"><span class="pre">client</span></code>. In this case, we can retrieve the <code class="docutils literal notranslate"><span class="pre">client</span></code> with the <code class="docutils literal notranslate"><span class="pre">get_client</span></code> function (Example taken from <a class="reference external" href="https://distributed.dask.org/en/stable/task-launch.html?highlight=delayed#dask-delayed">here</a>)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -657,6 +664,7 @@ keep data on workers
 </div>
 </div>
 </div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -717,14 +725,13 @@ keep data on workers
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-map">Process jobs with <code class="docutils literal notranslate"><span class="pre">map</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-jobs-with-submit">Process jobs with <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#catching-errors">Catching errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-functions-with-multiple-arguments">Process functions with multiple arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-data">Scattering data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-jobs-to-a-client-from-within-a-function">Sending jobs to a client from within a function</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
