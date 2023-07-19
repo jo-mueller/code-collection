@@ -311,6 +311,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frame-by-frame">frame_by_frame</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-data-types">Supported data types</a></li>
 </ul>
             </nav>
         </div>
@@ -611,6 +612,7 @@ document.write(`
 <section id="napari-time-slicer">
 <h3>napari-time-slicer<a class="headerlink" href="#napari-time-slicer" title="Permalink to this heading">#</a></h3>
 <p>The <a class="reference external" href="https://www.napari-hub.org/plugins/napari-time-slicer">napari time slicer</a> splits data into single timepoints and hands out the one that is currently selected in the viewer.</p>
+<p><img alt="" src="../_images/time-slicer.png" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">napari_time_slicer</span> <span class="kn">import</span> <span class="n">time_slicer</span>
@@ -649,7 +651,9 @@ document.write(`
 </section>
 <section id="frame-by-frame">
 <h3>frame_by_frame<a class="headerlink" href="#frame-by-frame" title="Permalink to this heading">#</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">frame_by_frame</span></code> is currently a utility function in napari-stress that does a similar thing as the time slicer. It is used like this:</p>
+<p><code class="docutils literal notranslate"><span class="pre">frame_by_frame</span></code> is currently a utility function in napari-stress that does a similar thing as the time slicer.</p>
+<p><img alt="" src="../_images/frame_by_frame.png" /></p>
+<p>It is used like this:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">napari_stress</span> <span class="kn">import</span> <span class="n">frame_by_frame</span>
@@ -671,6 +675,48 @@ document.write(`
 </div>
 </div>
 </section>
+</section>
+<section id="supported-data-types">
+<h2>Supported data types<a class="headerlink" href="#supported-data-types" title="Permalink to this heading">#</a></h2>
+<p>Both support some data types, but not all.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data type</p></th>
+<th class="head"><p>time-slicer</p></th>
+<th class="head"><p>frame_by_frame</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ImageData</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>LabelsData</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>PointsData</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>VectorsData</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>SurfacesData</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>LayerDataTuple</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Layer</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 
@@ -735,6 +781,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#frame-by-frame">frame_by_frame</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-data-types">Supported data types</a></li>
 </ul>
   </nav></div>
 
